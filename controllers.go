@@ -1,20 +1,16 @@
-package controllers
+package main
 
 import (
-	"github.com/keygen-test/db"
-	"github.com/keygen-test/models"
+	"github.com/keygen-test/repository"
 	"time"
 	"fmt"
 )
 
-func GetKeyController() (string, error) {
-
-	var k *models.SecretKey
-	var err error
-	k, err = db.DB.GetNextKey()
+func (a *App) GetKeyController() (string, error) {
+	k, err := repository.GetNextKey(a.DB)
 
 	if err != nil {
-		k, err = db.DB.GenerateNewKey()
+		k, err = repository.GetNextKey(a.DB)
 		if err != nil {
 			return "", err
 		}
@@ -22,7 +18,7 @@ func GetKeyController() (string, error) {
 
 	tNow := time.Now()
 	k.SentAt = &tNow
-	err = db.DB.UpdateKey(k)
+	err = repository.UpdateKey(a.DB, k)
 	if err != nil {
 		return "", err
 	}
@@ -30,9 +26,8 @@ func GetKeyController() (string, error) {
 	return k.Key, nil
 }
 
-func SubmitKeyController(key string) error {
-
-	k, err := db.DB.GetKey(key)
+func (a *App) SubmitKeyController(key string) error {
+	k, err := repository.GetKey(a.DB, key)
 	if err != nil{
 		return err
 	}
@@ -44,12 +39,12 @@ func SubmitKeyController(key string) error {
 	} else {
 		tNow := time.Now()
 		k.SubmitAt = &tNow
-		return db.DB.UpdateKey(k)
+		return repository.UpdateKey(a.DB, k)
 	}
 }
 
-func CheckKeyController(key string) (string, error) {
-	k, err := db.DB.GetKey(key)
+func (a *App) CheckKeyController(key string) (string, error) {
+	k, err := repository.GetKey(a.DB, key)
 	if err != nil{
 		return "", err
 	}
@@ -63,6 +58,6 @@ func CheckKeyController(key string) (string, error) {
 	}
 }
 
-func GetInfoController() (int, error) {
-	return db.DB.FreeKeyCount()
+func (a *App) GetInfoController() (int, error) {
+	return repository.FreeKeyCount(a.DB)
 }

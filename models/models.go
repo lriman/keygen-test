@@ -9,7 +9,3 @@ type SecretKey struct {
 	SentAt     *time.Time
 	SubmitAt   *time.Time
 }
-
-/*func (SecretKey) TableName() string {
-	return "secret_key"
-}*/

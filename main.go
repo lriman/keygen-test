@@ -2,22 +2,18 @@ package main
 
 import (
 	"log"
-	"net/http"
-	"github.com/gorilla/mux"
-	"github.com/keygen-test/db"
-	"github.com/keygen-test/handlers"
+	"github.com/keygen-test/generator"
 )
 
 func main() {
-	db.InitDatabaseConnection("127.0.0.1", "testuser", "mypass", "mydb")
+	a := new(App)
 
-	router := mux.NewRouter()
+	a.Initialize("127.0.0.1", "testuser", "mypass", "mydb")
+	log.Println("Database success connection")
 
-	router.HandleFunc("/get", handlers.GetKeyHandler).Methods("GET")
-	router.HandleFunc("/submit", handlers.SubmitKeyHandler).Methods("POST")
-	router.HandleFunc("/check", handlers.CheckKeyHandler).Methods("POST")
-	router.HandleFunc("/info", handlers.GetInfoHandler).Methods("GET")
+	go generator.KeyGen(a.DB)
 
-	log.Fatal(http.ListenAndServe(":8001", router))
+	log.Println("Service is open on 8001 port")
+	a.Run(":8001")
 }
 
