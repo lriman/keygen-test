@@ -45,6 +45,10 @@ func KeyGen(db *gorm.DB) {
 						query += "(?),"
 						vals = append(vals, nextKey)
 
+						/*
+						gorm не имеет встроенных методов для массовой вставки.
+						Handmade bulk insert
+						*/
 						if len(vals) == 200{
 							query = query[0:len(query)-1]
 
