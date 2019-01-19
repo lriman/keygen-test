@@ -4,23 +4,18 @@ import (
 	"github.com/keygen-test/repository"
 	"time"
 	"fmt"
+	"log"
 )
 
 func (a *App) GetKeyController() (string, error) {
-	k, err := repository.GetNextKey(a.DB)
-
-	if err != nil {
-		k, err = repository.GetNextKey(a.DB)
-		if err != nil {
-			return "", err
-		}
-	}
+	k, err := repository.GetRandomFreeKey(a.DB)
 
 	tNow := time.Now()
 	k.SentAt = &tNow
 	err = repository.UpdateKey(a.DB, k)
 	if err != nil {
-		return "", err
+		log.Println(err)
+		return "", fmt.Errorf("service not available")
 	}
 
 	return k.Key, nil

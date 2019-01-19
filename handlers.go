@@ -20,7 +20,7 @@ func (a *App) GetKeyHandler(w http.ResponseWriter, r *http.Request) {
 		resp.Result = result
 	}
 
-	log.Println("Reponse for new key:", resp)
+	log.Println("Response for new key:", resp)
 	json.NewEncoder(w).Encode(resp)
 }
 
@@ -34,7 +34,7 @@ func (a *App) SubmitKeyHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		resp.Error = err.Error()
 		json.NewEncoder(w).Encode(resp)
-		log.Println("Reponse for submit key:", resp)
+		log.Println("Response for submit key:", resp)
 		return
 	}
 
@@ -44,7 +44,7 @@ func (a *App) SubmitKeyHandler(w http.ResponseWriter, r *http.Request) {
 		resp.Error = err.Error()
 	}
 
-	log.Println("Reponse for submit key:", resp)
+	log.Println("Response for submit key:", resp)
 	json.NewEncoder(w).Encode(resp)
 }
 
@@ -58,7 +58,7 @@ func (a *App) CheckKeyHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		resp.Error = err.Error()
 		json.NewEncoder(w).Encode(resp)
-		log.Println("Reponse for check key:", resp)
+		log.Println("Response for check key:", resp)
 		return
 	}
 
@@ -70,7 +70,7 @@ func (a *App) CheckKeyHandler(w http.ResponseWriter, r *http.Request) {
 		resp.Result = result
 	}
 
-	log.Println("Reponse for check key:", resp)
+	log.Println("Response for check key:", resp)
 	json.NewEncoder(w).Encode(resp)
 }
 
@@ -86,6 +86,6 @@ func (a *App) GetInfoHandler(w http.ResponseWriter, r *http.Request) {
 		resp.Result = strconv.Itoa(result)
 	}
 
-	log.Println("Reponse for key pool info:", resp)
+	log.Println("Response for key pool info:", resp)
 	json.NewEncoder(w).Encode(resp)
 }

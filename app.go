@@ -27,15 +27,14 @@ func (a *App) Initialize(host, user, pwd, db string) {
 	}
 
 	a.DB.AutoMigrate(models.SecretKey{})
+
+	a.Router = mux.NewRouter()
+	a.Router.HandleFunc("/get", a.GetKeyHandler).Methods("GET")
+	a.Router.HandleFunc("/submit", a.SubmitKeyHandler).Methods("POST")
+	a.Router.HandleFunc("/check", a.CheckKeyHandler).Methods("POST")
+	a.Router.HandleFunc("/info", a.GetInfoHandler).Methods("GET")
 }
 
 func (a *App) Run(addr string) {
-	router := mux.NewRouter()
-
-	router.HandleFunc("/get", a.GetKeyHandler).Methods("GET")
-	router.HandleFunc("/submit", a.SubmitKeyHandler).Methods("POST")
-	router.HandleFunc("/check", a.CheckKeyHandler).Methods("POST")
-	router.HandleFunc("/info", a.GetInfoHandler).Methods("GET")
-
-	log.Fatal(http.ListenAndServe(addr, router))
+	log.Fatal(http.ListenAndServe(addr, a.Router))
 }
