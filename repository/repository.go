@@ -7,16 +7,15 @@ import (
 
 func GetRandomFreeKey(db *gorm.DB) (*models.SecretKey, error) {
 	k := new(models.SecretKey)
-	err := db.Where("sent_at is NULL").Order(gorm.Expr("random()")).First(&k).Error
+	err := db.Where("sent_at is NULL").Order(gorm.Expr("random()")).First(k).Error
 	return k, err
 }
 
 func GetLastKey(db *gorm.DB) (*models.SecretKey, error) {
 	k := new(models.SecretKey)
-	err := db.Last(&k).Error
+	err := db.Last(k).Error
 	return k, err
 }
-
 
 func UpdateKey(db *gorm.DB, k *models.SecretKey) error {
 	return db.Save(k).Error
